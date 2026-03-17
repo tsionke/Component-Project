@@ -1,0 +1,137 @@
+/* Login.css */
+
+.login-page-container {
+  height: 100vh;
+  width: 100vw;
+  background: #eef7f1; /* light gray / off-white */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family:
+    system-ui,
+    -apple-system,
+    sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+.login-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 100px 42px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  z-index: 2;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin: 0 0 32px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-wrapper {
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 16px 14px 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #eef7f1;
+  box-sizing: border-box;
+  color: #111827;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+.input-field:focus {
+  border-color: #10b981; /* emerald-500 green like button */
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.email-field {
+  /* you can add email icon via background or ::before if desired */
+}
+
+.password-field {
+  /* same for lock icon */
+}
+
+.login-button {
+  background: #028b34;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.login-button:hover {
+  background: #16a34a;
+}
+
+.login-button:active {
+  background: #15803d;
+}
+
+.signup-link {
+  text-align: center;
+  margin-top: 24px;
+  color: #64748b;
+  font-size: 15px;
+}
+
+.signup-link a {
+  color: #22c55e;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+
+/* Optional decorative leaf in bottom-right like your screenshot */
+.branding-corner {
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  font-size: 48px;
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 20px;
+  }
+  .branding-corner {
+    font-size: 36px;
+    bottom: 16px;
+    right: 16px;
+  }
+}
