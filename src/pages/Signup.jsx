@@ -3,6 +3,7 @@ import Button from "../components/ui/Button";
 import InputField from "../components/ui/InputField";
 import Card from "../components/ui/Card";
 import "../styles/Signup.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -57,6 +58,7 @@ const Signup = () => {
 
     return newErrors;
   };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -73,9 +75,9 @@ const Signup = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     console.log("Form submitted:", formData);
-    alert("Account created successfully! Check console for form data.");
 
     setIsSubmitting(false);
+    navigate("/profile-setup");
     setFormData({
       fullName: "",
       email: "",

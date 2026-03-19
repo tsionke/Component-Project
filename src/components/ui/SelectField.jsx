@@ -1,14 +1,13 @@
 import React from "react";
 
-const InputField = ({
+const SelectField = ({
   label,
-  type = "text",
   name,
-  placeholder,
   value,
   onChange,
-  error,
+  options = [],
   required,
+  error,
 }) => {
   return (
     <div className="input-field">
@@ -16,20 +15,26 @@ const InputField = ({
         {label} {required && "*"}
       </label>
 
-      <input
+      <select
         id={name}
-        type={type}
         name={name}
-        placeholder={placeholder}
         value={value}
         onChange={onChange}
         required={required}
         className={`input ${error ? "input-error" : ""}`}
-      />
+      >
+        <option value="">Select {label}</option>
+
+        {options.map((opt, index) => (
+          <option key={index} value={opt.value}>
+            {opt.label}
+          </option>
+        ))}
+      </select>
 
       {error && <span className="error-message">{error}</span>}
     </div>
   );
 };
 
-export default InputField;
+export default SelectField;

@@ -8,6 +8,7 @@ import CreateRequest from "./pages/CreateRequest";
 import MyRequests from "./pages/MyRequests";
 import Profile from "./pages/Profile";
 import ChatBot from "./pages/Chatbot";
+import ProfileSetup from "./pages/ProfileSetup";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -25,6 +26,7 @@ function App() {
           <Route path="my-requests" element={<MyRequests />} />
           <Route path="profile" element={<Profile />} />
           <Route path="chatbot" element={<ChatBot />} />
+          <Route path="profile-setup" element={<ProfileSetup />} />
         </Route>
       </Routes>
     </BrowserRouter>
