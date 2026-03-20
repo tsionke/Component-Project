@@ -1,64 +1,42 @@
+//import 'dart:developer';
+
+import 'package:alpha/constants/routes.dart';
+import 'package:alpha/firebase_options.dart';
+import 'package:alpha/views/login_view.dart';
+import 'package:alpha/views/register_view.dart';
+import 'package:alpha/views/verify_email_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'firebase_options.dart';
+//import 'dart:developer' as devtools show log;
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        //primarySwatch: const Color.fromARGB(255, 22, 110, 25),
+      
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color.fromARGB(255, 13, 54, 15)),
       ),
-      home: const HomePage(),
+      home: const RegisterView(),
+      // routes: const HomePage(),
+      routes: {
+        loginRoute: (context) => const LoginView(),
+        registerRoute: (context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
+        verifyEmailRoute: (context) => const VerifyEmailView(),
+
+
+      },
     ),
     );
-}
-class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+}class HomePage extends StatelessWidget {
+  const HomePage
+({super.key});
 
-  @override
-  State<RegisterView> createState() => _RegisterViewState();
-}
-
-class _RegisterViewState extends State<RegisterView> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  late final TextEditingController _email;
-  late final TextEditingController _password;
-  @override
-  void initState() {
-    _email =TextEditingController();
-    _password =TextEditingController();
-    // TODO: implement initState
-    super.initState();
-  }
-  @override
-  void dispose() {
-    _email =TextEditingController();
-    _password =TextEditingController();
-    // TODO: implement initState
-    super.dispose();
-  }
-  
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("register")
-      ),
-      body: FutureBuilder(
+    return FutureBuilder(
         future: Firebase.initializeApp(
               options: DefaultFirebaseOptions.currentPlatform,
              ),
@@ -66,56 +44,97 @@ class _HomePageState extends State<HomePage> {
           switch (snapshot.connectionState) {
             
             case ConnectionState.done:
-              // TODO: Handle this case.
-              return Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: 
-              const InputDecoration(
-                hintText: "enter your email"
-              ),
-            ),
-            TextField(
-              controller: _password,
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-              decoration: 
-              const InputDecoration(
-                hintText: "enter your passward"
-              ),
-            ),
-          TextButton(
-            onPressed: () async {
-              
-        
-              final email = _email.text;
-              final password = _password.text;
-              final userCredential=
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                email: email,
-                 password: password,
-                 );
-                 print(userCredential);
-        
-            }, 
-            child: const Text('register'),
-            ),
-          ],
-        );
-        default:
-        return const Text('loading......');
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null){
+              if(user.emailVerified){
+           return const NotesView();
+
+            }else {
+              return const VerifyEmailView();
+            }
+            }else {
+                  return const LoginView();
+
+            }
+            default:
+        return const CircularProgressIndicator();
+           
+          
           }
-          
-          
         },
         
+      );
+  }
+
+}
+enum MenuAction {logout}
+
+class NotesView extends StatefulWidget {
+  const NotesView({super.key});
+
+  @override
+  State<NotesView> createState() => _NotesViewState();
+}
+
+class _NotesViewState extends State<NotesView> {
+  @override
+  Widget build(BuildContext context) {
+    return  Scaffold(
+      appBar: AppBar(
+        title: const Text('Main UI'),
+        actions: [
+          PopupMenuButton<MenuAction>(
+            onSelected: (value) async {
+              switch (value) {
+                  
+                case MenuAction.logout:
+                final shouldLogout = await showLogOutDialog(context);
+                if (shouldLogout){
+                 await FirebaseAuth.instance.signOut();              
+                 Navigator.of(context).pushNamedAndRemoveUntil(
+                  loginRoute,
+                  (_) => false,
+                  );
+                   }
+              }
+            },
+          itemBuilder: (context){
+            return  const[
+            PopupMenuItem<MenuAction>(
+              value: MenuAction.logout,
+              child: Text('logout'),
+              ),
+        ];
+          },
+          )
+        ],
       ),
+      body: const Text('halu'),
     );
   }
 }
-
+Future<bool> showLogOutDialog(BuildContext context){
+  return showDialog<bool>
+  (context: context,
+   builder: (context){
+    return AlertDialog(
+      title:  const Text('sign out'),
+      content: const Text('are you sure you want to log out?'),
+      actions: [
+        TextButton(
+          onPressed: (){
+              Navigator.of(context).pop(false);
+        },
+         child: const Text('cancel'),
+         ),
+        TextButton(
+          onPressed: (){
+           Navigator.of(context).pop(true);
+        },
+         child: const Text('logout'),
+         ),
+      ],
+    );
+   },
+   ).then((value) => value ?? false);
+}
