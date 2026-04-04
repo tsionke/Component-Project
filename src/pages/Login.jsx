@@ -32,7 +32,7 @@ const Login = () => {
   return (
     <div className="login-container">
       <Card>
-        <h1 className="login-title">Smart-Waste</h1>
+        <h1 className="login-title">Kuralewo</h1>
         <p className="login-description">
           Login to continue managing waste efficiently
         </p>
