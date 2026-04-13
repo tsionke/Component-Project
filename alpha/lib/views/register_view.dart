@@ -1,4 +1,3 @@
-// lib/views/register_view.dart
 import 'package:alpha/constants/routes.dart';
 import 'package:alpha/utils/dialog_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -70,7 +69,7 @@ class _RegisterViewState extends State<RegisterView> {
       // Save the user's full name
       await credential.user?.updateDisplayName(name);
 
-      // Refresh user data
+      // to refresh user data
       await credential.user?.reload();
 
       await credential.user?.sendEmailVerification();
